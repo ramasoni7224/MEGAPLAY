@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - MegaPlay</title>
+    <link rel="stylesheet" href="games.css">
+    <style>
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        .tictactoe-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #667eea;
+            margin: 0 0 10px 0;
+        }
+
+        .status {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .current-player {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 15px;
+        }
+
+        .cell {
+            aspect-ratio: 1;
+            background: white;
+            border: 3px solid #ddd;
+            border-radius: 10px;
+            font-size: 2.5em;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            color: #667eea;
+        }
+
+        .cell:hover {
+            background: #f9f9f9;
+            border-color: #667eea;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .cell.x {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .cell.o {
+            color: #764ba2;
+            font-weight: bold;
+        }
+
+        .cell.disabled {
+            cursor: not-allowed;
+        }
+
+        .result {
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+            min-height: 30px;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .back-btn {
+            background: #999;
+        }
+
+        .back-btn:hover {
+            background: #777;
+        }
+
+        .scores {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .score-item {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 480px) {
+            .tictactoe-container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .cell {
+                font-size: 2em;
+                min-height: 60px;
+            }
+
+            .buttons {
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                flex: 1;
+                min-width: 100px;
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+
+            .status {
+                font-size: 1em;
+            }
+
+            .current-player {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tictactoe-container {
+                padding: 30px;
+                max-width: 400px;
+            }
+
+            .header h1 {
+                font-size: 2.2em;
+            }
+
+            .cell {
+                font-size: 2.2em;
+                min-height: 70px;
+            }
+
+            .board {
+                gap: 8px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="tictactoe-container">
+        <div class="header">
+            <h1>Tic Tac Toe</h1>
+            <div class="status">
+                <span class="current-player"><span id="player">X</span>'s Turn</span>
+            </div>
+        </div>
+
+        <div class="board" id="board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+
+        <div class="result" id="result"></div>
+
+        <div class="buttons">
+            <button class="btn" onclick="resetGame()">New Game</button>
+            <button class="btn back-btn" onclick="window.location.href='index.html'">← Back to Hub</button>
+        </div>
+
+        <div class="scores">
+            <div class="score-item">
+                <strong>X Wins:</strong> <span id="xScore">0</span>
+            </div>
+            <div class="score-item">
+                <strong>O Wins:</strong> <span id="oScore">0</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let board = Array(9).fill(null);
+        let currentPlayer = 'X';
+        let gameOver = false;
+        // Clear localStorage on page load for fresh scoreboard
+        localStorage.removeItem('tictactoeXWins');
+        localStorage.removeItem('tictactoeOWins');
+        let xWins = 0;
+        let oWins = 0;
+
+        const winPatterns = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        // Update scores display
+        function updateScoresDisplay() {
+            document.getElementById('xScore').textContent = xWins;
+            document.getElementById('oScore').textContent = oWins;
+        }
+
+        // Check winner
+        function checkWinner() {
+            for (let pattern of winPatterns) {
+                const [a, b, c] = pattern;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    return board[a];
+                }
+            }
+            return null;
+        }
+
+        // Check draw
+        function checkDraw() {
+            return board.every(cell => cell !== null);
+        }
+
+        // Update board display
+        function updateDisplay() {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach((cell, index) => {
+                const value = board[index];
+                cell.textContent = value || '';
+                cell.className = 'cell';
+                if (value === 'X') {
+                    cell.classList.add('x');
+                } else if (value === 'O') {
+                    cell.classList.add('o');
+                }
+                if (gameOver) {
+                    cell.classList.add('disabled');
+                }
+            });
+
+            document.getElementById('player').textContent = currentPlayer;
+        }
+
+        // Handle cell click
+        document.querySelectorAll('.cell').forEach(cell => {
+            cell.addEventListener('click', () => {
+                const index = cell.dataset.index;
+                
+                if (board[index] === null && !gameOver) {
+                    board[index] = currentPlayer;
+
+                    const winner = checkWinner();
+                    if (winner) {
+                        document.getElementById('result').innerHTML = `🎉 Player <strong>${winner}</strong> Wins! 🎉`;
+                        gameOver = true;
+                        if (winner === 'X') {
+                            xWins++;
+                        } else {
+                            oWins++;
+                        }
+                        localStorage.setItem('tictactoeXWins', xWins);
+                        localStorage.setItem('tictactoeOWins', oWins);
+                        updateScoresDisplay();
+                    } else if (checkDraw()) {
+                        document.getElementById('result').innerHTML = `🤝 It's a Draw! 🤝`;
+                        gameOver = true;
+                    } else {
+                        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                    }
+
+                    updateDisplay();
+                }
+            });
+        });
+
+        // Reset game
+        function resetGame() {
+            board = Array(9).fill(null);
+            currentPlayer = 'X';
+            gameOver = false;
+            document.getElementById('result').textContent = '';
+            updateDisplay();
+        }
+
+        // Initialize
+        updateScoresDisplay();
+        updateDisplay();
+    </script>
+</body>
+</html>

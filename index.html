@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MegaPlay - Game Hub</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Loading Animation -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-container">
+            <div class="spinner"></div>
+            <p class="loading-text">Welcome to MegaPlay</p>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Website -->
+    <div id="mainContent" class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">🎮 MegaPlay</h1>
+            <p class="subtitle">Your Ultimate Game Hub</p>
+        </header>
+
+        <!-- Games Grid -->
+        <main class="games-container">
+            <!-- Tic Tac Toe -->
+            <a href="tictactoe.html" class="game-card">
+                <div class="game-icon">🔵</div>
+                <h2>Tic Tac Toe</h2>
+                <p>Classic strategy game</p>
+            </a>
+
+            <!-- Car Racing -->
+            <a href="carrace.html" class="game-card">
+                <div class="game-icon">🏎️</div>
+                <h2>Car Racing</h2>
+                <p>Realistic racing game</p>
+            </a>
+
+            <!-- Flappy Bird -->
+            <a href="flappybird.html" class="game-card">
+                <div class="game-icon">🐦</div>
+                <h2>Flappy Bird</h2>
+                <p>Navigate through pipes</p>
+            </a>
+
+            <!-- Chess -->
+            <a href="chess.html" class="game-card">
+                <div class="game-icon">♟️</div>
+                <h2>Chess</h2>
+                <p>Strategic board game</p>
+            </a>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
